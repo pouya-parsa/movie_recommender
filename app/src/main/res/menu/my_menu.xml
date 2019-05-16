@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+    >
+    <item android:title="دسته بندی ها">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/laptops"
+                    android:icon="@drawable/ic_laptop_black_24dp"
+                    android:checked="false"
+                    android:title="لپ تاپ"
+                    />
+                <item
+                    android:id="@+id/shirts"
+                    android:checked="false"
+                    android:icon="@drawable/shirt"
+                    android:title="لباس" />
+                <item
+                    android:id="@+id/fruits"
+                    android:icon="@drawable/fruit"
+                    android:title="میوه" />
+            </group>
+        </menu>
+    </item>
+
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/common_google_signin_btn_icon_dark"
+                android:title="share" />
+
+            <item
+                android:id="@+id/nav_share1"
+                android:icon="@drawable/common_google_signin_btn_icon_dark"
+                android:title="share1" />
+        </menu>
+    </item>
+
+</menu>
