@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "300553684579",
+    "firebase_url": "https://webadmin-1faab.firebaseio.com",
+    "project_id": "webadmin-1faab",
+    "storage_bucket": "webadmin-1faab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300553684579:android:28ce2fafc4325af0",
+        "android_client_info": {
+          "package_name": "com.pouya.digim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "300553684579-6lng1i8b9rg8cjl05l512lllarc9lbjq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pouya.digim",
+            "certificate_hash": "fa67441bbe6e01666bde721e85185e041ff2b362"
+          }
+        },
+        {
+          "client_id": "300553684579-cukmaps2oe9ilgdq2f8t2qjbohe03p75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxkS5zf7cSYNg3t82vLaBY-IhiqdNl9Pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "300553684579-cukmaps2oe9ilgdq2f8t2qjbohe03p75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
