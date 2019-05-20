@@ -2,7 +2,6 @@ package com.pouya.digim;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,14 +16,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -142,6 +134,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(getApplicationContext(), "Active" + active, Toast.LENGTH_SHORT).show();
                 total_txt.setVisibility(View.GONE);
 
+                Intent intent = new Intent(MainActivity.this, confirmActivity.class);
+
+                Bundle bundle = new Bundle();
+
+                bundle.putSerializable("user", new User());
+                bundle.putInt("total", total);
+
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+
             }
         });
 
@@ -152,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "در حال انتقال به سبد خرید", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "در حال انتقال به سبد خرید", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
                 fab.setVisibility(View.GONE);
                 swipeButton.setVisibility(View.VISIBLE);

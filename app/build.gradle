@@ -41,6 +41,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:17.0.0'
 
     implementation 'com.ebanx:swipe-button:0.4.0'
+
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
