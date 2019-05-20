@@ -3,9 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view"
     >
-    <item android:title="دسته بندی ها">
-        <menu>
-            <group android:checkableBehavior="single">
+    <item android:title="دسته بندی ها"
+        >
+        <menu
+            >
+            <group android:checkableBehavior="single"
+                >
                 <item
                     android:id="@+id/laptops"
                     android:icon="@drawable/ic_laptop_black_24dp"
@@ -26,17 +29,17 @@
     </item>
 
 
-    <item android:title="Communicate">
+    <item android:title="حساب کاربری">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/common_google_signin_btn_icon_dark"
-                android:title="share" />
+                android:title="خروج" />
 
             <item
                 android:id="@+id/nav_share1"
                 android:icon="@drawable/common_google_signin_btn_icon_dark"
-                android:title="share1" />
+                android:title="سفارشات من" />
         </menu>
     </item>
 

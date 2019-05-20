@@ -4,7 +4,17 @@ public class Product {
     private String title;
     private int price;
     private String image;
+    private String key;
+    private String category;
+    private String short_dis;
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public Product() {
 
@@ -38,5 +48,21 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getShort_dis() {
+        return short_dis;
+    }
+
+    public void setShort_dis(String short_disc) {
+        this.short_dis = short_disc;
     }
 }

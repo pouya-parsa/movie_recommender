@@ -4,8 +4,20 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/actionBar</item>
+        <item name="colorAccent">#fff</item>
     </style>
 
+
+
+   <style name="titleOfProduct">
+       <item name="android:textColor">#000</item>
+       <item name="android:textStyle">bold</item>
+       <item name="android:textSize">15sp</item>
+   </style>
+
+
+    <style name="priceOfProduct">
+        <item name="android:textColor">#f00</item>
+    </style>
 </resources>

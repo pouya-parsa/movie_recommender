@@ -39,8 +39,8 @@ public class MyRecyclerViewAdapter
 
         viewHolder.txtname.setText(String.valueOf(product.getTitle()));
         viewHolder.txtprice.setText(String.valueOf(product.getPrice()));
-//        viewHolder.productImage
         Glide.with(context).load(product.getImage()).into(viewHolder.productImage);
+
 
     }
 

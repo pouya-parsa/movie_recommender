@@ -1,10 +1,15 @@
 package com.pouya.digim;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +19,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
     private List<Product> Products;
-
+    private  FirebaseDatabase firebaseDatabase;
     private String category = "laptops";
     private DrawerLayout drawer;
 
@@ -39,6 +49,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main_layout);
+
+
+        //loading database
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase.getReference("basket").setValue("1");
+
 
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -52,7 +68,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+
+        toolbar.setBackgroundColor(getResources().getColor(R.color.actionBar));
+
+
         setSupportActionBar(toolbar);
+
+        setTitle("DigiOn");
+
 
         drawer = findViewById(R.id.draw_layout);
 
@@ -69,6 +92,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
+        recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Product product = Products.get(position);
+
+                Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("key", product.getKey());
+                bundle.putString("category", product.getCategory());
+
+                intent.putExtras(bundle);
+
+
+                startActivity(intent);
+
+                //saveToBasket(Products.get(position));
+                Toast.makeText(getApplicationContext(), Products.get(position).getTitle() + " is clicked!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(getApplicationContext(), Products.get(position).getTitle() + " is long pressed!", Toast.LENGTH_SHORT).show();
+
+            }
+        }));
+
+
+
+        FloatingActionButton fab = findViewById(R.id.shopping_cart);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "در حال انتقال به سبد خرید", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                loadProducts("basket");
+            }
+        });
+
     }
 
 //    @Override
@@ -92,12 +156,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public void loadProducts(String category) {
+    public void loadProducts(final String category) {
         Products.clear();
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = firebaseDatabase.getReference(category + "/");
 
-        dbRef.addValueEventListener(new ValueEventListener() {
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -105,7 +168,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
                     Product product = dataSnapshot1.getValue(Product.class);
+                    product.setKey(dataSnapshot1.getKey());
+                    product.setCategory(category);
                     Products.add(product);
+
                 }
                 setAdapterWithData();
             }
@@ -115,6 +181,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+    }
+
+
+    public void saveToBasket(Product product) {
+        DatabaseReference dbRef= firebaseDatabase.getReference("basket/");
+
+        String key = dbRef.push().getKey();
+
+        dbRef= firebaseDatabase.getReference("basket/" + key);
+
+        dbRef.setValue(product);
     }
 
 

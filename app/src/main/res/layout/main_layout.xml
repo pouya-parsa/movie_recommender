@@ -7,41 +7,133 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:openDrawer="start"
     >
 
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#ffffff"
-            android:elevation="4dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
 
-        <android.support.v7.widget.RecyclerView
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/actionBar"
+                app:titleTextColor="@color/actionBarTitle"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:elevation="0dp" />
 
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
+            <android.support.design.widget.CoordinatorLayout
+                android:id="@+id/main_content"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
 
-        </android.support.v7.widget.RecyclerView>
+                </android.support.v7.widget.RecyclerView>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/shopping_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/shopping_cart"
+                    app:fabSize="auto"
+                    app:fabCustomSize="75dp"
+                    app:maxImageSize="40dp"
+                    app:layout_anchor="@id/recyclerView"
+                    app:layout_anchorGravity="bottom|right|end" />
+
+            </android.support.design.widget.CoordinatorLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/confirmPart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:gravity="bottom|end"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="279dp">
+
+                <ImageView
+                    android:id="@+id/slide_to_buy"
+                    android:layout_width="278dp"
+                    android:layout_height="65dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/slice_to_buy" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="مجموع"
+                    android:textColor="#161616"
+                    app:layout_constraintEnd_toEndOf="@+id/textView4"
+                    app:layout_constraintStart_toStartOf="@+id/textView4"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    style="@style/titleOfProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="20000 تومان"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/slide_to_buy"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+
+
     </LinearLayout>
+
+
 
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/my_menu"
+        android:elevation="10dp"
+        android:textDirection="rtl"
+        android:layoutDirection="rtl"
+
         />
+
 
 </android.support.v4.widget.DrawerLayout>
 
