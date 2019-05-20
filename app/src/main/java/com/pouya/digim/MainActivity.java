@@ -1,5 +1,6 @@
 package com.pouya.digim;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,9 +24,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ebanx.swipebtn.OnStateChangeListener;
+import com.ebanx.swipebtn.SwipeButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +49,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String category = "laptops";
     private DrawerLayout drawer;
 
+    private int total;
+
+    private SwipeButton swipeButton;
+    private FloatingActionButton fab;
+    TextView total_txt;
+
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         this.loadProducts(this.category);
 
+        //load views
+        total_txt = findViewById(R.id.total);
+        total_txt.setVisibility(View.GONE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 
@@ -104,13 +119,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Bundle bundle = new Bundle();
                 bundle.putString("key", product.getKey());
                 bundle.putString("category", product.getCategory());
-
                 intent.putExtras(bundle);
 
 
                 startActivity(intent);
 
-                //saveToBasket(Products.get(position));
+                saveToBasket(Products.get(position));
                 Toast.makeText(getApplicationContext(), Products.get(position).getTitle() + " is clicked!", Toast.LENGTH_SHORT).show();
             }
 
@@ -121,19 +135,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }));
 
+        swipeButton = (SwipeButton) findViewById(R.id.swipe);
+        swipeButton.setOnStateChangeListener(new OnStateChangeListener() {
+            @Override
+            public void onStateChange(boolean active) {
+                Toast.makeText(getApplicationContext(), "Active" + active, Toast.LENGTH_SHORT).show();
+                total_txt.setVisibility(View.GONE);
+
+            }
+        });
+
+        swipeButton.setVisibility(View.GONE);
 
 
-        FloatingActionButton fab = findViewById(R.id.shopping_cart);
+        fab = findViewById(R.id.shopping_cart);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "در حال انتقال به سبد خرید", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                fab.setVisibility(View.GONE);
+                swipeButton.setVisibility(View.VISIBLE);
+                total_txt.setVisibility(View.VISIBLE);
+                total_txt.setText(" "+ total + " تومان ");
+
+
                 loadProducts("basket");
             }
         });
 
+
+
+
     }
+
+
+
 
 //    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -164,7 +201,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
                     Product product = dataSnapshot1.getValue(Product.class);
@@ -192,6 +228,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dbRef= firebaseDatabase.getReference("basket/" + key);
 
         dbRef.setValue(product);
+
+        total += product.getPrice();
+        Log.d("price", String.valueOf(total));
     }
 
 

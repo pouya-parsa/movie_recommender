@@ -10,113 +10,124 @@
     >
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-
-        <LinearLayout
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/pageContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             >
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/actionBar"
-                app:titleTextColor="@color/actionBarTitle"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                android:elevation="0dp" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/actionBar"
+            android:elevation="0dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_constraintStart_toStartOf="@+id/pageContainer"
+            app:layout_constraintTop_toTopOf="@+id/pageContainer"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextColor="@color/actionBarTitle" />
 
 
-            <android.support.design.widget.CoordinatorLayout
-                android:id="@+id/main_content"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/main_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="1.0">
 
-                <android.support.v7.widget.RecyclerView
+            <android.support.v7.widget.RecyclerView
 
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-
-                </android.support.v7.widget.RecyclerView>
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/shopping_cart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|right"
-                    android:layout_margin="16dp"
-                    android:src="@drawable/shopping_cart"
-                    app:fabSize="auto"
-                    app:fabCustomSize="75dp"
-                    app:maxImageSize="40dp"
-                    app:layout_anchor="@id/recyclerView"
-                    app:layout_anchorGravity="bottom|right|end" />
-
-            </android.support.design.widget.CoordinatorLayout>
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/confirmPart"
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:gravity="bottom|end"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="279dp">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/slide_to_buy"
-                    android:layout_width="278dp"
-                    android:layout_height="65dp"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0"
-                    app:srcCompat="@drawable/slice_to_buy" />
+            </android.support.v7.widget.RecyclerView>
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="مجموع"
-                    android:textColor="#161616"
-                    app:layout_constraintEnd_toEndOf="@+id/textView4"
-                    app:layout_constraintStart_toStartOf="@+id/textView4"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView4"
-                    style="@style/titleOfProduct"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="20000 تومان"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/slide_to_buy"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
-            </android.support.constraint.ConstraintLayout>
-
-        </LinearLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/shopping_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="16dp"
+                android:layout_marginEnd="28dp"
+                android:layout_marginRight="28dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/shopping_cart"
+                app:fabCustomSize="75dp"
+                app:fabSize="auto"
+                app:layout_anchorGravity="bottom|right|end"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:maxImageSize="40dp" />
 
 
-    </LinearLayout>
+            <com.ebanx.swipebtn.SwipeButton
+                android:id="@+id/swipe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_centerInParent="true"
+                android:layout_margin="0dp"
+                app:button_background="@drawable/shape_button"
+
+                app:button_bottom_padding="20dp"
+
+                app:button_image_disabled="@drawable/ic_local_grocery_store_black_24dp"
+                app:button_image_enabled="@drawable/ic_shopping_basket_black_24dp"
+                app:button_left_padding="20dp"
+
+                app:button_right_padding="20dp"
+                app:button_top_padding="20dp"
+                app:inner_text_background="@drawable/shape_rounded"
+
+
+                app:inner_text_bottom_padding="20dp"
+                app:inner_text_color="#000"
+
+                app:inner_text_size="15sp"
+                app:inner_text_top_padding="20dp"
+
+                app:layout_constraintBottom_toBottomOf="@id/main_content"
+                app:layout_constraintLeft_toLeftOf="@id/main_content"
+                app:layout_constraintRight_toRightOf="@id/main_content"
+
+
+                >
+
+            </com.ebanx.swipebtn.SwipeButton>
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="تومان"
+                android:textColor="#888888"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/swipe"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/swipe" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
 
 
 

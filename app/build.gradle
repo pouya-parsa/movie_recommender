@@ -1,10 +1,13 @@
 apply plugin: 'com.android.application'
 
+
+
+
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.pouya.digim"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -36,5 +39,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.google.firebase:firebase-database:17.0.0'
+
+    implementation 'com.ebanx:swipe-button:0.4.0'
 }
+
 apply plugin: 'com.google.gms.google-services'
