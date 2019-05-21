@@ -98,4 +98,14 @@ public class confirmActivity  extends AppCompatActivity  implements OnMapReadyCa
                         zoom);
         googleMap.animateCamera(update);
     }
+
+    public void confirm(View v) {
+        Intent intent = new Intent(confirmActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void cancel(View v) {
+        Intent intent = new Intent(confirmActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 }

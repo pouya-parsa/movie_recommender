@@ -47,6 +47,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FloatingActionButton fab;
     TextView total_txt;
 
+
+    private User user;
+    private TextView username_txt;
+    private TextView charge_txt;
+    NavigationView navigationView;
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,36 +63,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //loading database
         firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseDatabase.getReference("basket").setValue("1");
 
 
+        //recyclerView
         recyclerView = findViewById(R.id.recyclerView);
-
         recyclerView.setHasFixedSize(true);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
+        //data in recyclerView
         Products = new ArrayList<>();
 
+        //load recycler view
         this.loadProducts(this.category);
 
         //load views
         total_txt = findViewById(R.id.total);
         total_txt.setVisibility(View.GONE);
+        navigationView = findViewById(R.id.nav_view);
+        username_txt =  navigationView.getHeaderView(0).findViewById(R.id.username);
+        charge_txt = navigationView.getHeaderView(0).findViewById(R.id.charge);
 
+
+        //custom toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         toolbar.setBackgroundColor(getResources().getColor(R.color.actionBar));
-
-
         setSupportActionBar(toolbar);
-
         setTitle("DigiOn");
 
-
+        //drawer
         drawer = findViewById(R.id.draw_layout);
-
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -116,8 +121,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 startActivity(intent);
 
-                saveToBasket(Products.get(position));
-                Toast.makeText(getApplicationContext(), Products.get(position).getTitle() + " is clicked!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -127,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }));
 
+
+        //swipeButton
         swipeButton = (SwipeButton) findViewById(R.id.swipe);
         swipeButton.setOnStateChangeListener(new OnStateChangeListener() {
             @Override
@@ -138,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Bundle bundle = new Bundle();
 
-                bundle.putSerializable("user", new User());
+                bundle.putSerializable("user", user);
                 bundle.putInt("total", total);
 
                 intent.putExtras(bundle);
@@ -150,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         swipeButton.setVisibility(View.GONE);
 
-
+        //fab button
         fab = findViewById(R.id.shopping_cart);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,20 +165,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fab.setVisibility(View.GONE);
                 swipeButton.setVisibility(View.VISIBLE);
                 total_txt.setVisibility(View.VISIBLE);
-                total_txt.setText(" "+ total + " تومان ");
 
+                DatabaseReference dbRef = firebaseDatabase.getReference("basket");
 
-                loadProducts("basket");
+                total = 0;
+                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                            total += dataSnapshot1.getValue(Product.class).getPrice();
+                        }
+
+                        total_txt.setText(" "+ total + " تومان ");
+                        loadProducts("basket");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
+        //get user
+        int id = 1;
+        DatabaseReference dbRef = firebaseDatabase.getReference("/users/" + id);
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                Log.d("user", user.getName());
+                username_txt.setText(user.getName());
+                charge_txt.setText(String.valueOf(user.getCharge()) + " تومان ");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
 
-
-
     }
-
-
-
 
 //    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -220,20 +255,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-    }
-
-
-    public void saveToBasket(Product product) {
-        DatabaseReference dbRef= firebaseDatabase.getReference("basket/");
-
-        String key = dbRef.push().getKey();
-
-        dbRef= firebaseDatabase.getReference("basket/" + key);
-
-        dbRef.setValue(product);
-
-        total += product.getPrice();
-        Log.d("price", String.valueOf(total));
     }
 
 
