@@ -28,6 +28,8 @@ public class ProductActivity extends AppCompatActivity {
     String productKey;
     Product product;
 
+    User user;
+
     private FirebaseDatabase firebaseDatabase;
 
     @Override
@@ -74,6 +76,8 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
 
+        user = (User) getIntent().getSerializableExtra("user");
+
 
     }
 
@@ -88,6 +92,11 @@ public class ProductActivity extends AppCompatActivity {
         dbRef.setValue(product);
 
         Intent intent = new Intent(ProductActivity.this, MainActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("user", user.username);
+
+        intent.putExtras(bundle);
         startActivity(intent);
 
     }

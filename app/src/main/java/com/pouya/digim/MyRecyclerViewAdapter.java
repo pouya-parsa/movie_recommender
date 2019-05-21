@@ -39,6 +39,7 @@ public class MyRecyclerViewAdapter
 
         viewHolder.txtname.setText(String.valueOf(product.getTitle()));
         viewHolder.txtprice.setText(String.valueOf(product.getPrice()));
+        viewHolder.short_dis.setText(product.getShort_dis());
         Glide.with(context).load(product.getImage()).into(viewHolder.productImage);
 
 
@@ -52,6 +53,7 @@ public class MyRecyclerViewAdapter
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView txtname;
         public TextView txtprice;
+        public TextView short_dis;
         public ImageView productImage;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +62,7 @@ public class MyRecyclerViewAdapter
             txtname = itemView.findViewById(R.id.productName);
             txtprice = itemView.findViewById(R.id.productPrice);
             productImage = itemView.findViewById(R.id.productImage);
+            short_dis = itemView.findViewById(R.id.short_dis);
         }
     }
 }

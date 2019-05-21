@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +23,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class confirmActivity  extends AppCompatActivity  implements OnMapReadyCallback {
@@ -28,6 +35,11 @@ public class confirmActivity  extends AppCompatActivity  implements OnMapReadyCa
 
     TextView username_txt;
     TextView total_txt;
+    int total;
+    User user;
+
+    private FirebaseDatabase firebaseDatabase;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,10 +47,12 @@ public class confirmActivity  extends AppCompatActivity  implements OnMapReadyCa
         setContentView(R.layout.confirm_layout);
         Intent intent = getIntent();
 
-        User user = (User) intent.getSerializableExtra("user");
+        user = (User) intent.getSerializableExtra("user");
 
-        int total = intent.getIntExtra("total", 0);
+        total = intent.getIntExtra("total", 0);
 
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -100,12 +114,30 @@ public class confirmActivity  extends AppCompatActivity  implements OnMapReadyCa
     }
 
     public void confirm(View v) {
+
+        if(user.charge > total) {
+            DatabaseReference debRef = firebaseDatabase.getReference("users/" + user.username);
+            user.setCharge(user.charge - total);
+            debRef.setValue(user);
+            Toast.makeText(getApplicationContext(), "خرید با موفقیت انجام شد", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "موجودی حساب شما کافی نیست", Toast.LENGTH_LONG).show();
+        }
+
         Intent intent = new Intent(confirmActivity.this, MainActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("user", user.username);
+        intent.putExtras(bundle);
         startActivity(intent);
+
     }
 
     public void cancel(View v) {
         Intent intent = new Intent(confirmActivity.this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("user", user.username);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 }

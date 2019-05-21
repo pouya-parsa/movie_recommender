@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Bundle bundle = new Bundle();
                 bundle.putString("key", product.getKey());
                 bundle.putString("category", product.getCategory());
+                bundle.putSerializable("user", user);
                 intent.putExtras(bundle);
 
 
@@ -160,8 +161,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "در حال انتقال به سبد خرید", Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "در حال انتقال به سبد خرید", Snackbar.LENGTH_SHORT)
+//                        .setAction("Action", null).show();
                 fab.setVisibility(View.GONE);
                 swipeButton.setVisibility(View.VISIBLE);
                 total_txt.setVisibility(View.VISIBLE);
@@ -188,14 +189,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+
         //get user
-        int id = 1;
-        DatabaseReference dbRef = firebaseDatabase.getReference("/users/" + id);
+        String username = getIntent().getStringExtra("user");
+
+
+        DatabaseReference dbRef = firebaseDatabase.getReference("/users/" + username);
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
-                Log.d("user", user.getName());
                 username_txt.setText(user.getName());
                 charge_txt.setText(String.valueOf(user.getCharge()) + " تومان ");
 
@@ -223,6 +226,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.fruits:
                 this.loadProducts("fruits");
+                break;
+            case R.id.nav_exit:
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
                 break;
         }
 

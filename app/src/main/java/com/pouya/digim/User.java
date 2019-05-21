@@ -5,8 +5,19 @@ import java.io.Serializable;
 public class User implements Serializable {
     String name;
     int charge;
-    long password;
+    String password;
     String username;
+
+    public User() {
+
+    }
+
+    public User(String username, String password) {
+        this.name = "نام شما";
+        this.charge = 10000;
+        this.password = password;
+        this.username = username;
+    }
 
     public String getName() {
         return name;
@@ -24,11 +35,11 @@ public class User implements Serializable {
         this.charge = charge;
     }
 
-    public long getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(long password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
