@@ -265,4 +265,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerViewAdapter = new MyRecyclerViewAdapter(SortedMovies, MainActivity.this);
         recyclerView.setAdapter(recyclerViewAdapter);
     }
+    public void ConnectToSvd(){
+
+    }
 }
