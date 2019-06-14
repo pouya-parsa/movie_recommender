@@ -7,7 +7,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.pouya.digim"
-        minSdkVersion 16
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
     implementation files('libs\\commons-math3-3.6.1.jar')
     implementation group: 'com.github.haifengl', name: 'smile-core', version: '1.5.3'
+    implementation files('libs/commons-math3-3.6.1.jar')
 
 }
 

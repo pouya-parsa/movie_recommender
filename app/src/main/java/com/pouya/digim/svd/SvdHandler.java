@@ -17,7 +17,7 @@ import smile.clustering.SpectralClustering;
 import static com.pouya.digim.svd.libs.SVD.*;
 
 public class SvdHandler {
-    public static double[][] SvdHandler(double[][] UsersData,double[][]UsergoalData){
+    public static double[] SvdHandler(double[][] UsersData,double[][]UsergoalData, int goalUserIndex){
 
 //        double [][] data = new double[][] {
 //                {3, 3, 3, 3, 4, 4, 3, 4, 6, 4},
@@ -38,7 +38,8 @@ public class SvdHandler {
 
         RealMatrix dataMatrix = MatrixUtils.createRealMatrix(usersData);
 
-        int cutPoints = CutPointCalculate.CutPointCalculator(calculate(MatrixUtils.createRealMatrix(UsersData)).getS());
+
+        int cutPoints = CutPointCalculate.CutPointCalculator(calculate(Matrix.removeRow(dataMatrix, goalUserIndex)).getS());
 
 
         SpectralClustering spectralClustering = new SpectralClustering(UsersData, cutPoints, 1);
@@ -75,6 +76,6 @@ public class SvdHandler {
         Log.d("!clustering", spectralClustering.toString());
 
         Log.d("!cut point", String.valueOf(cutPoints));
-        return goalUser.getData();
+        return goalUser.getData()[0];
     }
     }

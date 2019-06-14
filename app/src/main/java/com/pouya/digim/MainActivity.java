@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pouya.digim.addedByMohh.SortArray;
+import com.pouya.digim.svd.SvdHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +50,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private User user;
     private TextView username_txt;
     private TextView charge_txt;
+
+    private int goalUser;
+
+    double [][] usersData;
+    double [][] goalUserData;
+
+    String username = "pouya";
+
     NavigationView navigationView;
 
     @SuppressLint("RestrictedApi")
@@ -68,14 +75,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
+
+
+        //user data to make prediction
+        this.readData(username);
+
+
         //data in recyclerView
         movies = new ArrayList<>();
 
         //load recycler view
         //get user
 //        String username = getIntent().getStringExtra("user");
-        String username = "pouya";
-        this.loadMovies(username);
+
 
         //load views
         total_txt = findViewById(R.id.total);
@@ -239,9 +251,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     movies.add(movie);
                     SortedMovies = SortArray.Sorting(movies);
 
-                    setAdapterWithData();
 
                 }
+
+                setAdapterWithData();
+
+
             }
 
             @Override
@@ -251,6 +266,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+
+    public void readData(final String username) {
+        DatabaseReference dbRef = firebaseDatabase.getReference("users/");
+
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+
+                int userCounter = 0;
+                int movieCounter = 0;
+
+                double [][] data = new double[(int) dataSnapshot.getChildrenCount()][5];
+
+                for (DataSnapshot user: dataSnapshot.getChildren()) {
+                    if(user.getKey().equals(username)) {
+                        goalUser = userCounter;
+                    }
+                    movieCounter = 0;
+                    for(DataSnapshot movie: user.getChildren()) {
+                        data[userCounter][movieCounter] = movie.getValue(MovieModel.class).getRate();
+                        movieCounter++;
+                    }
+                    userCounter++;
+
+                }
+
+                usersData = data;
+                startloadMovies("pouya");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    public void startloadMovies(String username) {
+
+        this.loadMovies(username);
+        Log.d("usersData", String.valueOf(usersData[5][4]));
+        Log.d("goalUser", String.valueOf(goalUser));
+
+        double[] predicted =  SvdHandler.SvdHandler(usersData, goalUserData, goalUser);
+
+        
+    }
 
     @Override
     public void onBackPressed() {

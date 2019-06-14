@@ -6,6 +6,7 @@ public class MovieModel  implements Serializable {
     private String name;
     private float rate;
     private String image;
+    private Boolean ratedBy;
 
 
     public MovieModel() {
