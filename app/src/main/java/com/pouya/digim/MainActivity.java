@@ -28,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.pouya.digim.addedByMohh.Movie;
+import com.pouya.digim.addedByMohh.Rate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
     private List<Product> Products;
+    private Movie[]filled_by_pouya=new Movie[2];
     private  FirebaseDatabase firebaseDatabase;
     private String category = "laptops";
     private DrawerLayout drawer;
@@ -59,12 +62,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main_layout);
-
-
         //loading database
         firebaseDatabase = FirebaseDatabase.getInstance();
-
-
+        filled_by_pouya[0]=new Movie("freins",2);
+        filled_by_pouya[1]=new Movie("titanic",4);
         //recyclerView
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -82,8 +83,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_view);
         username_txt =  navigationView.getHeaderView(0).findViewById(R.id.username);
         charge_txt = navigationView.getHeaderView(0).findViewById(R.id.charge);
-
-
+        //added by mohh//
+        for(int moviecounter=0;moviecounter<filled_by_pouya.length;moviecounter++){
+            Product product=new Product();
+            product.setRating(filled_by_pouya[moviecounter].getRating());
+            product.setTitle(filled_by_pouya[moviecounter].getName());
+            Products.add(product);
+        }
+        setAdapterWithData();
         //custom toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.actionBar));
@@ -104,23 +111,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-
         recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Product product = Products.get(position);
+                Product productss = Products.get(position);
 
-                Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+//                Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putString("key", product.getKey());
+//                bundle.putString("category", product.getCategory());
+//                bundle.putSerializable("user", user);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("key", product.getKey());
-                bundle.putString("category", product.getCategory());
-                bundle.putSerializable("user", user);
-                intent.putExtras(bundle);
-
-
-                startActivity(intent);
+                Rate.Rated();
+                //inja bas database update she va taghir kone//
 
             }
 
@@ -174,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                            total += dataSnapshot1.getValue(Product.class).getPrice();
+//                            total += dataSnapshot1.getValue(Product.class).getPrice();
                         }
 
                         total_txt.setText(" "+ total + " تومان ");
@@ -246,15 +252,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-
-                    Product product = dataSnapshot1.getValue(Product.class);
-                    product.setKey(dataSnapshot1.getKey());
-                    product.setCategory(category);
-                    Products.add(product);
-
-                }
-                setAdapterWithData();
+//                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+//
+//                    Product product = dataSnapshot1.getValue(Product.class);
+//                    product.setKey(dataSnapshot1.getKey());
+//                    product.setCategory(category);
+//                    Products.add(product);
+//
+//
+//                }
             }
 
             @Override

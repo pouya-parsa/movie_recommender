@@ -64,9 +64,9 @@ public class ProductActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 product = dataSnapshot.getValue(Product.class);
 //                Log.d("product", product.getKey());
-                Glide.with(getApplicationContext()).load(product.getImage()).into(productImage);
+//                Glide.with(getApplicationContext()).load(product.getImage()).into(productImage);
                 productTitle.setText(product.getTitle());
-                productDisc.setText(product.getShort_dis());
+                //productDisc.setText(product.getShort_dis());
                 setTitle(product.getTitle());
             }
 
@@ -100,5 +100,4 @@ public class ProductActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-
 }
