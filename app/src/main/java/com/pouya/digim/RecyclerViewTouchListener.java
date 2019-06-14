@@ -5,9 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RatingBar;
-
-import com.pouya.digim.addedByMohh.Rate;
 
 
 public class RecyclerViewTouchListener implements RecyclerView.OnItemTouchListener{

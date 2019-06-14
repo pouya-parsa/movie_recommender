@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,8 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.pouya.digim.addedByMohh.Movie;
-import com.pouya.digim.addedByMohh.Rate;
+import com.pouya.digim.addedByMohh.SortArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +36,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
-    private List<Product> Products;
-    private Movie[]filled_by_pouya=new Movie[2];
+    private List<MovieModel> movies;
+    private List<MovieModel> SortedMovies;
     private  FirebaseDatabase firebaseDatabase;
-    private String category = "laptops";
     private DrawerLayout drawer;
 
     private int total;
@@ -64,18 +61,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.main_layout);
         //loading database
         firebaseDatabase = FirebaseDatabase.getInstance();
-        filled_by_pouya[0]=new Movie("freins",2);
-        filled_by_pouya[1]=new Movie("titanic",4);
+//        filled_by_pouya.add(new Movie("freins",4));
+//        filled_by_pouya.add(new Movie("titanic",2));
         //recyclerView
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
         //data in recyclerView
-        Products = new ArrayList<>();
+        movies = new ArrayList<>();
 
         //load recycler view
-        this.loadProducts(this.category);
+        //get user
+//        String username = getIntent().getStringExtra("user");
+        String username = "pouya";
+        this.loadMovies(username);
 
         //load views
         total_txt = findViewById(R.id.total);
@@ -84,120 +84,111 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         username_txt =  navigationView.getHeaderView(0).findViewById(R.id.username);
         charge_txt = navigationView.getHeaderView(0).findViewById(R.id.charge);
         //added by mohh//
-        for(int moviecounter=0;moviecounter<filled_by_pouya.length;moviecounter++){
-            Product product=new Product();
-            product.setRating(filled_by_pouya[moviecounter].getRating());
-            product.setTitle(filled_by_pouya[moviecounter].getName());
-            Products.add(product);
-        }
-        setAdapterWithData();
-        //custom toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.actionBar));
-        setSupportActionBar(toolbar);
-        setTitle("DigiOn");
 
-        //drawer
-        drawer = findViewById(R.id.draw_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
-        ActionBarDrawerToggle toggle =
-                new ActionBarDrawerToggle(this,
-                        drawer,
-                        toolbar,
-                        R.string.navigation_drawer_open,
-                        R.string.navigation_drawer_close);
-
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Product productss = Products.get(position);
-
-//                Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+//        //custom toolbar
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        toolbar.setBackgroundColor(getResources().getColor(R.color.actionBar));
+//        setSupportActionBar(toolbar);
+//        setTitle("DigiOn");
+//
+//        //drawer
+//        drawer = findViewById(R.id.draw_layout);
+//        NavigationView navigationView = findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
+//
+//        ActionBarDrawerToggle toggle =
+//                new ActionBarDrawerToggle(this,
+//                        drawer,
+//                        toolbar,
+//                        R.string.navigation_drawer_open,
+//                        R.string.navigation_drawer_close);
+//
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
+//        recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
+//            @Override
+//            public void onClick(View view, int position) {
+////                Product productss = Products.get(position);
+//
+////                Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+////
+////                Bundle bundle = new Bundle();
+////                bundle.putString("key", product.getKey());
+////                bundle.putString("category", product.getCategory());
+////                bundle.putSerializable("user", user);
+////                intent.putExtras(bundle);
+////                startActivity(intent);
+//
+//            }
+//
+//            @Override
+//            public void onLongClick(View view, int position) {
+//                Toast.makeText(getApplicationContext(), movies.get(position).getName() + " is long pressed!", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        }));
+//
+//
+//        //swipeButton
+//        swipeButton = (SwipeButton) findViewById(R.id.swipe);
+//        swipeButton.setOnStateChangeListener(new OnStateChangeListener() {
+//            @Override
+//            public void onStateChange(boolean active) {
+//                Toast.makeText(getApplicationContext(), "Active" + active, Toast.LENGTH_SHORT).show();
+//                total_txt.setVisibility(View.GONE);
+//
+//                Intent intent = new Intent(MainActivity.this, confirmActivity.class);
 //
 //                Bundle bundle = new Bundle();
-//                bundle.putString("key", product.getKey());
-//                bundle.putString("category", product.getCategory());
+//
 //                bundle.putSerializable("user", user);
+//                bundle.putInt("total", total);
+//
 //                intent.putExtras(bundle);
+//
 //                startActivity(intent);
-
-                Rate.Rated();
-                //inja bas database update she va taghir kone//
-
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), Products.get(position).getTitle() + " is long pressed!", Toast.LENGTH_SHORT).show();
-
-            }
-        }));
-
-
-        //swipeButton
-        swipeButton = (SwipeButton) findViewById(R.id.swipe);
-        swipeButton.setOnStateChangeListener(new OnStateChangeListener() {
-            @Override
-            public void onStateChange(boolean active) {
-                Toast.makeText(getApplicationContext(), "Active" + active, Toast.LENGTH_SHORT).show();
-                total_txt.setVisibility(View.GONE);
-
-                Intent intent = new Intent(MainActivity.this, confirmActivity.class);
-
-                Bundle bundle = new Bundle();
-
-                bundle.putSerializable("user", user);
-                bundle.putInt("total", total);
-
-                intent.putExtras(bundle);
-
-                startActivity(intent);
-
-            }
-        });
-
-        swipeButton.setVisibility(View.GONE);
-
-        //fab button
-        fab = findViewById(R.id.shopping_cart);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "در حال انتقال به سبد خرید", Snackbar.LENGTH_SHORT)
-//                        .setAction("Action", null).show();
-                fab.setVisibility(View.GONE);
-                swipeButton.setVisibility(View.VISIBLE);
-                total_txt.setVisibility(View.VISIBLE);
-
-                DatabaseReference dbRef = firebaseDatabase.getReference("basket");
-
-                total = 0;
-                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-//                            total += dataSnapshot1.getValue(Product.class).getPrice();
-                        }
-
-                        total_txt.setText(" "+ total + " تومان ");
-                        loadProducts("basket");
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        });
+//
+//            }
+//        });
+//
+//        swipeButton.setVisibility(View.GONE);
+//
+//        //fab button
+//        fab = findViewById(R.id.shopping_cart);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Snackbar.make(view, "در حال انتقال به سبد خرید", Snackbar.LENGTH_SHORT)
+////                        .setAction("Action", null).show();
+//                fab.setVisibility(View.GONE);
+//                swipeButton.setVisibility(View.VISIBLE);
+//                total_txt.setVisibility(View.VISIBLE);
+//
+//                DatabaseReference dbRef = firebaseDatabase.getReference("basket");
+//
+//                total = 0;
+//                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+////                            total += dataSnapshot1.getValue(Product.class).getPrice();
+//                        }
+//
+//                        total_txt.setText(" "+ total + " تومان ");
+//                        loadProducts("basket");
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//        });
 
 
-        //get user
-        String username = getIntent().getStringExtra("user");
+
 
 
         DatabaseReference dbRef = firebaseDatabase.getReference("/users/" + username);
@@ -223,16 +214,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Log.d("eoo", "hello");
         switch (menuItem.getItemId()) {
-            case R.id.laptops :
-                Toast.makeText(getApplicationContext(), "laptops selected", Toast.LENGTH_SHORT).show();
-                this.loadProducts("laptops");
-                break;
-            case R.id.shirts:
-                this.loadProducts("shirts");
-                break;
-            case R.id.fruits:
-                this.loadProducts("fruits");
-                break;
             case R.id.nav_exit:
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
@@ -244,23 +225,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public void loadProducts(final String category) {
-        Products.clear();
-        DatabaseReference dbRef = firebaseDatabase.getReference(category + "/");
+    public void loadMovies(final String username) {
+        movies.clear();
+        DatabaseReference dbRef = firebaseDatabase.getReference("users/"+ username +"/");
 
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-//                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//
-//                    Product product = dataSnapshot1.getValue(Product.class);
-//                    product.setKey(dataSnapshot1.getKey());
-//                    product.setCategory(category);
-//                    Products.add(product);
-//
-//
-//                }
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+
+                    MovieModel movie = dataSnapshot1.getValue(MovieModel.class);
+                    movies.add(movie);
+                    SortedMovies = SortArray.Sorting(movies);
+
+                    setAdapterWithData();
+
+                }
             }
 
             @Override
@@ -281,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setAdapterWithData() {
-        recyclerViewAdapter = new MyRecyclerViewAdapter(Products, MainActivity.this);
+        recyclerViewAdapter = new MyRecyclerViewAdapter(SortedMovies, MainActivity.this);
         recyclerView.setAdapter(recyclerViewAdapter);
     }
 }

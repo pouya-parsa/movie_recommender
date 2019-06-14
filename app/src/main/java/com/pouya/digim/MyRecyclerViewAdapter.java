@@ -17,11 +17,11 @@ import java.util.List;
 public class MyRecyclerViewAdapter
     extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
-    private List<Product> Products;
+    private List<MovieModel> movies;
     private Context context;
 
-    public MyRecyclerViewAdapter(List<Product> products, Context context) {
-        Products = products;
+    public MyRecyclerViewAdapter(List<MovieModel> movies, Context context) {
+        movies = movies;
         this.context = context;
     }
 
@@ -35,31 +35,25 @@ public class MyRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Product product = Products.get(i);
-        viewHolder.txtname.setText(String.valueOf(product.getTitle()));
-//        viewHolder.txtprice.setText(String.valueOf(product.getPrice()));
-        //viewHolder.short_dis.setText(product.getShort_dis());
-        viewHolder.ratingBar.setRating(product.getRating());
-//        Glide.with(context).load(product.getImage()).into(viewHolder.productImage);
+        MovieModel movie = movies.get(i);
+        viewHolder.txtname.setText(String.valueOf(movie.getName()));
+        viewHolder.ratingBar.setRating(movie.getRate());
+        Glide.with(context).load(movie.getImage()).into(viewHolder.movieImage);
     }
 
     @Override
     public int getItemCount() {
-        return Products.size();
+        return movies.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView txtname;
-//        public TextView txtprice;
-//        public TextView short_dis;
-//        public ImageView productImage;
+        public ImageView movieImage;
         public RatingBar ratingBar;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtname = itemView.findViewById(R.id.productName);
-//            txtprice = itemView.findViewById(R.id.productPrice);
-//            productImage = itemView.findViewById(R.id.productImage);
-            //short_dis = itemView.findViewById(R.id.short_dis);
+            movieImage = itemView.findViewById(R.id.productImage);
             ratingBar=itemView.findViewById(R.id.RatingBar);
         }
     }

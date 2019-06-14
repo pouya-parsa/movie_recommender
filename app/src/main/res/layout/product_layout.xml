@@ -87,19 +87,29 @@
 
 
 
-        <Button
-            android:id="@+id/addToBasket"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="36dp"
+        <!--<Button-->
+            <!--android:id="@+id/addToBasket"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_marginBottom="36dp"-->
+            <!--android:background="@color/actionBar"-->
+            <!--android:text="اضافه کردن به سبد"-->
+            <!--android:textColor="#fff"-->
+            <!--android:textSize="16sp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--android:onClick="saveToBasket"-->
+            <!--/>-->
+        <RatingBar
+            android:id="@+id/rated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@color/actionBar"
-            android:text="اضافه کردن به سبد"
-            android:textColor="#fff"
-            android:textSize="16sp"
+            android:progressTint="@android:color/holo_blue_bright"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:onClick="saveToBasket"
             />
     </android.support.constraint.ConstraintLayout>
 

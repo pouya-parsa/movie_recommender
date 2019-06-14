@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -24,9 +25,10 @@ public class ProductActivity extends AppCompatActivity {
     TextView productTitle;
     ImageView productImage;
     TextView productDisc;
+    RatingBar ratingBar;
 
     String productKey;
-    Product product;
+    MovieModel movie;
 
     User user;
 
@@ -44,6 +46,7 @@ public class ProductActivity extends AppCompatActivity {
         productTitle = findViewById(R.id.product_title);
         productImage = findViewById(R.id.product_image);
         productDisc = findViewById(R.id.product_disc);
+        ratingBar=findViewById(R.id.rated);
 
         //set action bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -62,12 +65,10 @@ public class ProductActivity extends AppCompatActivity {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                product = dataSnapshot.getValue(Product.class);
-//                Log.d("product", product.getKey());
-//                Glide.with(getApplicationContext()).load(product.getImage()).into(productImage);
-                productTitle.setText(product.getTitle());
-                //productDisc.setText(product.getShort_dis());
-                setTitle(product.getTitle());
+                movie = dataSnapshot.getValue(MovieModel.class);
+                Glide.with(getApplicationContext()).load(movie.getImage()).into(productImage);
+                productTitle.setText(movie.getName());
+                setTitle(movie.getName());
             }
 
             @Override
@@ -78,26 +79,35 @@ public class ProductActivity extends AppCompatActivity {
 
         user = (User) getIntent().getSerializableExtra("user");
 
-
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener()
+                                        {
+                                            @Override
+                                            public void onRatingChanged(RatingBar ratingBar,
+                                                                        float rating,
+                                                                        boolean fromUser) {
+                                                ratingBar.setRating(rating);
+                                            }
+                                        }
+        );
+    }
     }
 
 
-    public void saveToBasket(View v) {
-        DatabaseReference dbRef= firebaseDatabase.getReference("basket/");
-
-        String key = dbRef.push().getKey();
-
-        dbRef= firebaseDatabase.getReference("basket/" + key);
-
-        dbRef.setValue(product);
-
-        Intent intent = new Intent(ProductActivity.this, MainActivity.class);
-
-        Bundle bundle = new Bundle();
-        bundle.putString("user", user.username);
-
-        intent.putExtras(bundle);
-        startActivity(intent);
-
-    }
-}
+//    public void saveToBasket(View v) {
+//        DatabaseReference dbRef= firebaseDatabase.getReference("basket/");
+//
+//        String key = dbRef.push().getKey();
+//
+//        dbRef= firebaseDatabase.getReference("basket/" + key);
+//
+//        dbRef.setValue(product);
+//
+//        Intent intent = new Intent(ProductActivity.this, MainActivity.class);
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putString("user", user.username);
+//
+//        intent.putExtras(bundle);
+//        startActivity(intent);
+//
+//    }
