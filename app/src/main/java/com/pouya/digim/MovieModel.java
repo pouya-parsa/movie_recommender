@@ -1,8 +1,10 @@
 package com.pouya.digim;
 
-public class MovieModel {
+import java.io.Serializable;
+
+public class MovieModel  implements Serializable {
     private String name;
-    private int rate;
+    private float rate;
     private String image;
 
 
@@ -24,11 +26,11 @@ public class MovieModel {
         this.name = name;
     }
 
-    public int getRate() {
+    public float getRate() {
         return rate;
     }
 
-    public void setRate(int rate) {
+    public void setRate(float rate) {
         this.rate = rate;
     }
 

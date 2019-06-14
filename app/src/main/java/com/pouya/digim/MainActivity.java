@@ -86,11 +86,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //added by mohh//
 
 
-//        //custom toolbar
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        toolbar.setBackgroundColor(getResources().getColor(R.color.actionBar));
-//        setSupportActionBar(toolbar);
-//        setTitle("DigiOn");
+        //custom toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.actionBar));
+        setSupportActionBar(toolbar);
+        setTitle("Movie");
 //
 //        //drawer
 //        drawer = findViewById(R.id.draw_layout);
@@ -106,29 +106,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //
 //        drawer.addDrawerListener(toggle);
 //        toggle.syncState();
-//        recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
-//            @Override
-//            public void onClick(View view, int position) {
-////                Product productss = Products.get(position);
 //
-////                Intent intent = new Intent(MainActivity.this, ProductActivity.class);
-////
-////                Bundle bundle = new Bundle();
-////                bundle.putString("key", product.getKey());
-////                bundle.putString("category", product.getCategory());
-////                bundle.putSerializable("user", user);
-////                intent.putExtras(bundle);
-////                startActivity(intent);
-//
-//            }
-//
-//            @Override
-//            public void onLongClick(View view, int position) {
-//                Toast.makeText(getApplicationContext(), movies.get(position).getName() + " is long pressed!", Toast.LENGTH_SHORT).show();
-//
-//            }
-//        }));
-//
+        recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                MovieModel movie = movies.get(position);
+
+                Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", user);
+                bundle.putSerializable("movie", movie);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(getApplicationContext(), movies.get(position).getName() + " is long pressed!", Toast.LENGTH_SHORT).show();
+
+            }
+        }));
+
 //
 //        //swipeButton
 //        swipeButton = (SwipeButton) findViewById(R.id.swipe);
@@ -191,21 +191,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        DatabaseReference dbRef = firebaseDatabase.getReference("/users/" + username);
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                username_txt.setText(user.getName());
-                charge_txt.setText(String.valueOf(user.getCharge()) + " تومان ");
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+//        DatabaseReference dbRef = firebaseDatabase.getReference("/users/" + username);
+//        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                user = dataSnapshot.getValue(User.class);
+//                username_txt.setText(user.getName());
+//                charge_txt.setText(String.valueOf(user.getCharge()) + " تومان ");
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
     }

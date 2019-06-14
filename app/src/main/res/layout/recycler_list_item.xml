@@ -43,42 +43,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/chromebook" />
-            <TextView
-                android:id="@+id/productPrice"
-                style="@style/priceOfProduct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginBottom="8dp"
-                android:text="20000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/productImage"
-                app:layout_constraintTop_toBottomOf="@+id/RatingBar" />
-
-            <TextView
-                android:id="@+id/textView2"
-                style="@style/priceOfProduct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="3dp"
-                android:layout_marginRight="3dp"
-                android:text="تومان"
-
-                app:layout_constraintBottom_toBottomOf="@+id/productPrice"
-                app:layout_constraintEnd_toStartOf="@+id/productPrice" />
 
             <RatingBar
                 android:id="@+id/RatingBar"
+                style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginTop="28dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:progressTint="@android:color/holo_blue_bright"
-                app:layout_constraintBottom_toTopOf="@+id/productPrice"
+                android:progressTint="@color/actionBar"
                 app:layout_constraintEnd_toStartOf="@+id/productImage"
+                app:layout_constraintHorizontal_bias="0.637"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productName" />
 

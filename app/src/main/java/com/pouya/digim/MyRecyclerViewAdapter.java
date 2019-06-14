@@ -21,7 +21,7 @@ public class MyRecyclerViewAdapter
     private Context context;
 
     public MyRecyclerViewAdapter(List<MovieModel> movies, Context context) {
-        movies = movies;
+        this.movies = movies;
         this.context = context;
     }
 

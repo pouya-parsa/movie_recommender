@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -39,14 +40,11 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_layout);
 
-        //
-        Intent intent = getIntent();
 
         //get view
         productTitle = findViewById(R.id.product_title);
         productImage = findViewById(R.id.product_image);
-        productDisc = findViewById(R.id.product_disc);
-        ratingBar=findViewById(R.id.rated);
+        ratingBar = findViewById(R.id.rated);
 
         //set action bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -54,44 +52,34 @@ public class ProductActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        //get product info
-        productKey = intent.getStringExtra("key");
-
-
         //database
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = firebaseDatabase.getReference(intent.getStringExtra("category") + "/" + productKey);
 
-        dbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                movie = dataSnapshot.getValue(MovieModel.class);
-                Glide.with(getApplicationContext()).load(movie.getImage()).into(productImage);
-                productTitle.setText(movie.getName());
-                setTitle(movie.getName());
-            }
+        movie = (MovieModel) getIntent().getSerializableExtra("movie");
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        Glide.with(getApplicationContext()).load(movie.getImage()).into(productImage);
+        productTitle.setText(movie.getName());
+        ratingBar.setRating(movie.getRate());
+        setTitle(movie.getName());
 
         user = (User) getIntent().getSerializableExtra("user");
 
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener()
-                                        {
-                                            @Override
-                                            public void onRatingChanged(RatingBar ratingBar,
-                                                                        float rating,
-                                                                        boolean fromUser) {
-                                                ratingBar.setRating(rating);
-                                            }
-                                        }
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                                                   @Override
+                                                   public void onRatingChanged(RatingBar ratingBar,
+                                                                               float rating,
+                                                                               boolean fromUser) {
+                                                       ratingBar.setRating(rating);
+                                                       changeRate(rating);
+                                                   }
+                                               }
         );
-    }
+
     }
 
+
+    public void changeRate(float rate) {
+        Toast.makeText(getApplicationContext(), "Your rate is" + String.valueOf(rate), Toast.LENGTH_LONG).show();
+    }
 
 //    public void saveToBasket(View v) {
 //        DatabaseReference dbRef= firebaseDatabase.getReference("basket/");
@@ -111,3 +99,4 @@ public class ProductActivity extends AppCompatActivity {
 //        startActivity(intent);
 //
 //    }
+}
