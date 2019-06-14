@@ -37,7 +37,11 @@ public class MyRecyclerViewAdapter
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         MovieModel movie = movies.get(i);
         viewHolder.txtname.setText(String.valueOf(movie.getName()));
-        viewHolder.ratingBar.setRating(movie.getRate());
+        if(movie.getRatedBy()==true) {
+            viewHolder.ratingBar.setRating(movie.getRate());
+        }else{
+            viewHolder.ratingBar.setRating(0);
+        }
         Glide.with(context).load(movie.getImage()).into(viewHolder.movieImage);
     }
 

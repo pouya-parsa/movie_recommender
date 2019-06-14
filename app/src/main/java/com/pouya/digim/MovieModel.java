@@ -31,6 +31,14 @@ public class MovieModel  implements Serializable {
         return rate;
     }
 
+    public Boolean getRatedBy() {
+        return ratedBy;
+    }
+
+    public void setRatedBy(Boolean ratedBy) {
+        this.ratedBy = ratedBy;
+    }
+
     public void setRate(float rate) {
         this.rate = rate;
     }
